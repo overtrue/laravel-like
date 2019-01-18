@@ -1,0 +1,20 @@
+{
+    "name": "overtrue/laravel-like",
+    "description": "User-like features for Laravel Application.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "overtrue",
+            "email": "anzhengchao@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Overtrue\\LaravelLike\\": "src"
+        }
+    },
+    "require-dev": {
+        "laravel/framework": "^5.7"
+    }
+}
