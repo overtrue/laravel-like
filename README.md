@@ -1,6 +1,6 @@
 <h1 align="center"> laravel-likes </h1>
 
-<p align="center"> User-like featuresfor Laravel Application..</p>
+<p align="center"> User-like features for Laravel Application..</p>
 
 
 ## Installing
