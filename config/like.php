@@ -1,7 +1,23 @@
 <?php
 
 return [
+    /**
+     * Model name of users.
+     */
     'user_model' => 'App\User',
-    'user_id_foreign_key' => 'user_id',
+
+    /**
+     * User tables foreign key name.
+     */
+    'user_foreign_key' => 'user_id',
+
+    /**
+     * Table name for likes records.
+     */
+    'likes_table' => 'likes',
+
+    /**
+     * Model name for like record.
+     */
     'like_model' => 'Overtrue\LaravelLike\Like',
 ];

@@ -4,23 +4,20 @@
 namespace Overtrue\LaravelLike\Traits;
 
 
-use Overtrue\LaravelLike\Like;
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelLike\Like;
 
 /**
  * Trait CanBeLiked
- *
- * @author overtrue <i@overtrue.me>
  */
 trait CanLike
 {
     public function like(Model $object)
     {
         if (!$this->hasLiked($object)) {
-            $like = new ${config('like.like_model')}(
-                [config('like.user_id_foreign_key', 'user_id') => $this->id]
-            );
-            return $object->likable()->save($like);
+            $like = app(config('like.like_model'));
+            $like->{config('like.user_foreign_key')} = $this->getKey();
+            return $object->likes()->save($like);
         }
 
         return true;
@@ -28,9 +25,9 @@ trait CanLike
 
     public function unlike(Model $object)
     {
-        return $object->likable()
-            ->where('likable_id', $object->id)
-            ->where('likable_type', \get_class($object))
+        return $object->likes()
+            ->where('likable_id', $object->getKey())
+            ->where('likable_type', $object->getMorphClass())
             ->delete();
     }
 
@@ -46,8 +43,8 @@ trait CanLike
     public function hasLiked(Model $object)
     {
         return $this->likes
-                ->where('likable_id', $object->id)
-                ->where('likable_type', \get_class($object))
+                ->where('likable_id', $object->getKey())
+                ->where('likable_type', $object->getMorphClass())
                 ->count() > 0;
     }
 
@@ -58,6 +55,6 @@ trait CanLike
      */
     public function likes()
     {
-        return $this->hasMany(Like::class);
+        return $this->hasMany(config('like.like_model'), config('like.user_foreign_key'), $this->getKeyName());
     }
 }

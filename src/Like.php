@@ -4,18 +4,25 @@ namespace Overtrue\LaravelLike;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Like8
+ */
 class Like extends Model
 {
-    protected $fillable = [
-        'user_id',
-    ];
+    public function __construct(array $attributes = [])
+    {
+        $this->table = \config('like.likes_table');
+
+        parent::__construct($attributes);
+    }
 
     protected static function boot()
     {
         parent::boot();
 
         self::saving(function($like){
-            $like->user_id = $like->user_id ?: auth()->id();
+            $userForeignKey = \config('like.user_foreign_key');
+            $like->{$userForeignKey} = $like->{$userForeignKey} ?: auth()->user()->getKey();
         });
     }
 
