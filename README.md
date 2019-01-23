@@ -30,14 +30,14 @@ $ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvi
 
 ### Traits
 
-#### `Overtrue\LaravelLike\CanLike`
+#### `Overtrue\LaravelLike\Traits\CanLike`
 
 ```php
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Overtrue\LaravelLike\CanLike;
+use Overtrue\LaravelLike\Traits\CanLike;
 
 class User extends Authenticatable
 {
@@ -47,7 +47,7 @@ class User extends Authenticatable
 }
 ```
 
-#### `Overtrue\LaravelLike\CanBeLiked`
+#### `Overtrue\LaravelLike\Traits\CanBeLiked`
 
 ```php
 use Illuminate\Database\Eloquent\Model;
