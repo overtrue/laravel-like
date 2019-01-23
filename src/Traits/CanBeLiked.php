@@ -26,7 +26,7 @@ trait CanBeLiked
     {
         if (\is_a($user, config('auth.providers.users.model'))) {
             if ($this->relationLoaded('likers')) {
-                return $this->likes->where($user->getKeyName(), $user->getKey())->count() > 0;
+                return $this->likers->where($user->getKeyName(), $user->getKey())->count() > 0;
             }
 
             return tap($this->relationLoaded('likes') ? $this->likes : $this->likes())
