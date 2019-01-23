@@ -10,6 +10,7 @@
 
 namespace Overtrue\LaravelLike;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -17,6 +18,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Like extends Model
 {
+    /**
+     * Like constructor.
+     *
+     * @param array $attributes
+     */
     public function __construct(array $attributes = [])
     {
         $this->table = \config('like.likes_table');
@@ -37,5 +43,16 @@ class Like extends Model
     public function likable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $type
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithType(Builder $query, string $type)
+    {
+        return $query->where('likable_type', app($type)->getMorphClass());
     }
 }

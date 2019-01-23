@@ -33,6 +33,24 @@ class FeatureTest extends TestCase
         $this->assertTrue($post->isLikedBy($user));
     }
 
+    public function test_aggregations()
+    {
+        $user = User::create(['name' => 'overtrue']);
+
+        $post1 = Post::create(['title' => 'Hello world!']);
+        $post2 = Post::create(['title' => 'Hello everyone!']);
+        $book1 = Book::create(['title' => 'Learn laravel.']);
+        $book2 = Book::create(['title' => 'Learn symfony.']);
+
+        $user->like($post1);
+        $user->like($post2);
+        $user->like($book1);
+        $user->like($book2);
+
+        $this->assertSame(4, $user->likes()->count());
+        $this->assertSame(2, $user->likes()->withType(Book::class)->count());
+    }
+
     public function test_object_likers()
     {
         $user1 = User::create(['name' => 'overtrue']);

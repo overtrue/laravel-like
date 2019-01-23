@@ -93,6 +93,29 @@ foreach($post->likers as $user) {
 }
 ```
 
+### Aggregations
+
+```php
+// all
+$user->likes()->count(); 
+
+// with type
+$user->likes()->withType(Post::class)->count(); 
+
+// likers count
+$post->likers()->count();
+```
+
+List with `*_count` attribute:
+
+```php
+$users = User::withCount('likes')->get();
+
+foreach($users as $user) {
+    echo $user->likes_count;
+}
+```
+
 ### N+1 issue
 
 To avoid the N+1 issue, you can use eager loading to reduce this operation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
