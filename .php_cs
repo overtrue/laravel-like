@@ -1,6 +1,6 @@
 <?php
 $header = <<<EOF
-This file is part of the overtrue/laravel-likes.
+This file is part of the overtrue/laravel-like.
 
 (c) overtrue <anzhengchao@gmail.com>
 

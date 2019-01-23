@@ -1,11 +1,19 @@
 <?php
 
+/*
+ * This file is part of the overtrue/laravel-like.
+ *
+ * (c) overtrue <anzhengchao@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
+
 namespace Overtrue\LaravelLike;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class Like8
+ * Class Like8.
  */
 class Like extends Model
 {
@@ -20,7 +28,7 @@ class Like extends Model
     {
         parent::boot();
 
-        self::saving(function($like){
+        self::saving(function ($like) {
             $userForeignKey = \config('like.user_foreign_key');
             $like->{$userForeignKey} = $like->{$userForeignKey} ?: auth()->user()->getKey();
         });

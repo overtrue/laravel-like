@@ -1,20 +1,24 @@
 <?php
 
+/*
+ * This file is part of the overtrue/laravel-like.
+ *
+ * (c) overtrue <anzhengchao@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
 
 namespace Overtrue\LaravelLike;
-
 
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class LikeServiceProvider
+ * Class LikeServiceProvider.
  */
 class LikeServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -23,14 +27,16 @@ class LikeServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->publishes([
-            \dirname(__DIR__).'/migrations/' => database_path('migrations')
+            \dirname(__DIR__).'/migrations/' => database_path('migrations'),
         ], 'migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(\dirname(__DIR__).'/migrations/');
+        }
     }
 
     /**
      * Register bindings in the container.
-     *
-     * @return void
      */
     public function register()
     {

@@ -1,6 +1,6 @@
 {
     "name": "overtrue/laravel-like",
-    "description": "User-like features for Laravel Application.",
+    "description": "\uD83D\uDC4D User-like features for Laravel Application.",
     "license": "MIT",
     "authors": [
         {
@@ -8,7 +8,9 @@
             "email": "anzhengchao@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "laravel/framework": "^5.5"
+    },
     "autoload": {
         "psr-4": {
             "Overtrue\\LaravelLike\\": "src"
@@ -24,5 +26,10 @@
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "~7",
         "orchestra/testbench": "^3.7"
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["Overtrue\\LaravelLike\\LikeServiceProvider"]
+        }
     }
 }

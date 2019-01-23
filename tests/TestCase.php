@@ -1,16 +1,23 @@
 <?php
 
-namespace Tests;
+/*
+ * This file is part of the overtrue/laravel-like.
+ *
+ * (c) overtrue <anzhengchao@gmail.com>
+ *
+ * This source file is subject to the MIT license that is bundled.
+ */
 
+namespace Tests;
 
 use Overtrue\LaravelLike\LikeServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
-     * Load package service provider
+     * Load package service provider.
      *
-     * @param  \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return array
      */
@@ -22,17 +29,16 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * Define environment setup.
      *
-     * @param  \Illuminate\Foundation\Application  $app
-     * @return void
+     * @param \Illuminate\Foundation\Application $app
      */
     protected function getEnvironmentSetUp($app)
     {
         // Setup default database to use sqlite :memory:
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 

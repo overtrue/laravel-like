@@ -1,17 +1,119 @@
-<h1 align="center"> laravel-likes </h1>
+<h1 align="center"> Laravel Like </h1>
 
-<p align="center"> User-like features for Laravel Application.</p>
+<p align="center"> 👍 User-like features for Laravel Application.</p>
 
 
 ## Installing
 
 ```shell
-$ composer require overtrue/laravel-likes -vvv
+$ composer require overtrue/laravel-like -vvv
 ```
+
+### Configuration
+
+This step is optional
+
+```php
+$ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=config
+```
+
+### Migrations
+
+This step is also optional, if you want to custom likes table, you can publish the migration files:
+
+```php
+$ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=migrations
+```
+
 
 ## Usage
 
-TODO
+### Traits
+
+#### `Overtrue\LaravelLike\CanLike`
+
+```php
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Overtrue\LaravelLike\CanLike;
+
+class User extends Authenticatable
+{
+    use Notifiable, CanLike;
+    
+    <...>
+}
+```
+
+#### `Overtrue\LaravelLike\CanBeLiked`
+
+```php
+use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelLike\Traits\CanBeLiked;
+
+class Post extends Model
+{
+    use CanBeLiked;
+
+    <...>
+}
+```
+
+### API
+
+```php
+$user = User::find(1);
+$post = Post::find(2);
+
+$user->like($post);
+$user->unlike($post);
+$user->toggleLike($post);
+
+$user->hasLiked($post); 
+$post->isLikedBy($user); 
+```
+
+Get User liked items:
+
+```php
+$items = $user->likedItems(); 
+
+foreach ($items as $item) {
+    // 
+}
+```
+
+Get object likers:
+
+```php
+foreach($post->likers as $user) {
+    // echo $user->name;
+}
+```
+
+### N+1 issue
+
+To avoid the N+1 issue, you can use eager loading to reduce this operation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
+
+```php
+// CanLike
+$users = App\User::with('likes')->get();
+
+foreach($users as $user) {
+    $user->hasLiked($post);
+}
+
+// CanBeLiked
+$posts = App\Post::with('likes')->get();
+// or 
+$posts = App\Post::with('likers')->get();
+
+foreach($posts as $post) {
+    $post->isLikedBy($user);
+}
+```
 
 ## Contributing
 
