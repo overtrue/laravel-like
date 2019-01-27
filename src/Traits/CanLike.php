@@ -31,7 +31,7 @@ trait CanLike
             return $object->likes()->save($like);
         }
 
-        return true;
+        return 1;
     }
 
     /**
@@ -41,10 +41,12 @@ trait CanLike
      */
     public function unlike(Model $object)
     {
-        return $object->likes()
+        $relation = $object->likes()
             ->where('likable_id', $object->getKey())
             ->where('likable_type', $object->getMorphClass())
-            ->delete();
+            ->first();
+
+        return \intval(!$relation || $relation->delete());
     }
 
     /**
