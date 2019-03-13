@@ -11,6 +11,9 @@
 namespace Overtrue\LaravelLike\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
+use Overtrue\LaravelLike\Events\Liked;
+use Overtrue\LaravelLike\Events\Unliked;
 
 /**
  * Trait CanBeLiked.
@@ -19,8 +22,6 @@ trait CanLike
 {
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
-     *
-     * @return bool
      */
     public function like(Model $object)
     {
@@ -28,16 +29,14 @@ trait CanLike
             $like = app(config('like.like_model'));
             $like->{config('like.user_foreign_key')} = $this->getKey();
 
-            return $object->likes()->save($like);
-        }
+            $object->likes()->save($like);
 
-        return 1;
+            Event::dispatch(new Liked($this, $object));
+        }
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
-     *
-     * @return mixed
      */
     public function unlike(Model $object)
     {
@@ -46,21 +45,18 @@ trait CanLike
             ->where('likable_type', $object->getMorphClass())
             ->first();
 
-        return \intval(!$relation || $relation->delete());
+        if ($relation) {
+            $relation->delete();
+            Event::dispatch(new Unliked($this, $object));
+        }
     }
 
     /**
      * @param \Illuminate\Database\Eloquent\Model $object
-     *
-     * @return bool
      */
     public function toggleLike(Model $object)
     {
-        if ($this->hasLiked($object)) {
-            return $this->unlike($object);
-        }
-
-        return $this->like($object);
+        $this->hasLiked($object) ? $this->unlike($object) : $this->like($object);
     }
 
     /**

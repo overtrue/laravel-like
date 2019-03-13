@@ -10,6 +10,10 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Event;
+use Overtrue\LaravelLike\Events\Liked;
+use Overtrue\LaravelLike\Events\Unliked;
+
 /**
  * Class FeatureTest.
  */
@@ -18,6 +22,8 @@ class FeatureTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        Event::fake();
 
         config(['auth.providers.users.model' => User::class]);
     }
@@ -29,8 +35,18 @@ class FeatureTest extends TestCase
 
         $user->like($post);
 
+        Event::assertDispatched(Liked::class, function ($event) use ($user, $post) {
+            return $event->target instanceof Post && $event->user instanceof User && $event->user->id === $user->id && $event->target->id === $post->id;
+        });
+
         $this->assertTrue($user->hasLiked($post));
         $this->assertTrue($post->isLikedBy($user));
+
+        $user->unlike($post);
+
+        Event::assertDispatched(Unliked::class, function ($event) use ($user, $post) {
+            return $event->target instanceof Post && $event->user instanceof User && $event->user->id === $user->id && $event->target->id === $post->id;
+        });
     }
 
     public function test_aggregations()

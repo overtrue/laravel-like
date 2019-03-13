@@ -138,6 +138,14 @@ foreach($posts as $post) {
 }
 ```
 
+
+### Events
+
+| **Event** | **Description** |
+| --- | --- |
+|  `Overtrue\LaravelLike\Events\Liked` | Triggered when the relationship is created. |
+|  `Overtrue\LaravelLike\Events\Unliked` | Triggered when the relationship is deleted. |
+
 ## Contributing
 
 You can contribute in one of three ways:
