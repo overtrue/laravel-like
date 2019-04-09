@@ -49,6 +49,25 @@ class FeatureTest extends TestCase
         });
     }
 
+    public function test_unlike_features()
+    {
+        $user1 = User::create(['name' => 'overtrue']);
+        $user2 = User::create(['name' => 'allen']);
+        $user3 = User::create(['name' => 'taylor']);
+
+        $post = Post::create(['title' => 'Hello world!']);
+
+        $user2->like($post);
+        $user3->like($post);
+        $user1->like($post);
+
+        $user1->unlike($post);
+
+        $this->assertFalse($user1->hasLiked($post));
+        $this->assertTrue($user2->hasLiked($post));
+        $this->assertTrue($user3->hasLiked($post));
+    }
+
     public function test_aggregations()
     {
         $user = User::create(['name' => 'overtrue']);
