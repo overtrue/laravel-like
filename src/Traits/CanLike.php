@@ -43,6 +43,7 @@ trait CanLike
         $relation = $object->likes()
             ->where('likable_id', $object->getKey())
             ->where('likable_type', $object->getMorphClass())
+            ->where(config('like.user_foreign_key'), $this->getKey())
             ->first();
 
         if ($relation) {
