@@ -75,7 +75,7 @@ $user->hasLiked($post);
 $post->isLikedBy($user); 
 ```
 
-Get user liked items with pagination:
+Get user likes with pagination:
 
 ```php
 $likes = $user->likes()->with('likable')->paginate(20);
@@ -85,7 +85,7 @@ foreach ($likes as $like) {
 }
 ```
 
-Without pagination:
+Get user liked items without pagination:
 
 ```php
 $items = $user->likedItems(); 
