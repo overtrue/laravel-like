@@ -75,13 +75,23 @@ $user->hasLiked($post);
 $post->isLikedBy($user); 
 ```
 
-Get User liked items:
+Get user liked items with pagination:
+
+```php
+$likes = $user->likes()->with('likable')->paginate(20);
+
+foreach ($likes as $like) {
+    $like->likable; // App\Post instance
+}
+```
+
+Without pagination:
 
 ```php
 $items = $user->likedItems(); 
 
 foreach ($items as $item) {
-    // 
+    // $item: App\Post instance
 }
 ```
 
@@ -89,6 +99,16 @@ Get object likers:
 
 ```php
 foreach($post->likers as $user) {
+    // echo $user->name;
+}
+```
+
+with pagination:
+
+```php
+$likers = $post->likers()->paginate(20);
+
+foreach($likers as $user) {
     // echo $user->name;
 }
 ```
