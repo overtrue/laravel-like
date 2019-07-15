@@ -13,13 +13,14 @@ namespace Tests;
 use Illuminate\Support\Facades\Event;
 use Overtrue\LaravelLike\Events\Liked;
 use Overtrue\LaravelLike\Events\Unliked;
+use Overtrue\LaravelLike\Like;
 
 /**
  * Class FeatureTest.
  */
 class FeatureTest extends TestCase
 {
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -28,12 +29,12 @@ class FeatureTest extends TestCase
         config(['auth.providers.users.model' => User::class]);
     }
 
-    public function testBasicFeatures()
+    public function test_basic_features()
     {
         $user = User::create(['name' => 'overtrue']);
         $post = Post::create(['title' => 'Hello world!']);
 
-        $user->like($post);
+        $this->assertInstanceOf(Like::class, $user->like($post));
 
         Event::assertDispatched(Liked::class, function ($event) use ($user, $post) {
             return $event->target instanceof Post && $event->user instanceof User && $event->user->id === $user->id && $event->target->id === $post->id;
@@ -42,7 +43,7 @@ class FeatureTest extends TestCase
         $this->assertTrue($user->hasLiked($post));
         $this->assertTrue($post->isLikedBy($user));
 
-        $user->unlike($post);
+        $this->assertNull($user->unlike($post));
 
         Event::assertDispatched(Unliked::class, function ($event) use ($user, $post) {
             return $event->target instanceof Post && $event->user instanceof User && $event->user->id === $user->id && $event->target->id === $post->id;
