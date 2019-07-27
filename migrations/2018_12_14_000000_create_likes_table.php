@@ -21,7 +21,13 @@ class CreateLikesTable extends Migration
     {
         Schema::create(config('like.likes_table'), function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger(config('like.user_foreign_key'))->index()->comment('user_id');
+
+            if (version_compare(app()->version(), '5.8', '>=')) {
+                $table->unsignedBigInteger(config('like.user_foreign_key'))->index()->comment('user_id');
+            } else {
+                $table->unsignedInteger(config('like.user_foreign_key'))->index()->comment('user_id');
+            }
+
             $table->morphs('likable');
             $table->timestamps();
         });
