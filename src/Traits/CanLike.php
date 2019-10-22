@@ -77,7 +77,7 @@ trait CanLike
      */
     public function hasLiked(Model $object)
     {
-        return tap($this->relationLoaded('likes') ? $this->likes : $this->likes())
+        return ($this->relationLoaded('likes') ? $this->likes : $this->likes())
             ->where('likable_id', $object->getKey())
             ->where('likable_type', $object->getMorphClass())
             ->count() > 0;
