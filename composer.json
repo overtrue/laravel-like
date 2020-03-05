@@ -25,7 +25,7 @@
         "laravel/framework": "^6.0|^7.0",
         "mockery/mockery": "^1.2",
         "phpunit/phpunit": "~9",
-        "orchestra/testbench": "^4.0"
+        "orchestra/testbench": "^5.0"
     },
     "extra": {
         "laravel": {
