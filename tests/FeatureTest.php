@@ -10,6 +10,7 @@
 
 namespace Tests;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Event;
 use Overtrue\LaravelLike\Events\Liked;
 use Overtrue\LaravelLike\Events\Unliked;
@@ -114,6 +115,26 @@ class FeatureTest extends TestCase
         $this->assertFalse($post->isLikedBy($user3));
 
         $this->assertEmpty($sqls->all());
+    }
+
+    public function test_object_likers_with_custom_morph_class_name()
+    {
+        $user1 = User::create(['name' => 'overtrue']);
+        $user2 = User::create(['name' => 'allen']);
+        $user3 = User::create(['name' => 'taylor']);
+
+        $post = Post::create(['title' => 'Hello world!']);
+
+        Relation::morphMap([
+            'posts' => Post::class,
+        ]);
+
+        $user1->like($post);
+        $user2->like($post);
+
+        $this->assertCount(2, $post->likers);
+        $this->assertSame('overtrue', $post->likers[0]['name']);
+        $this->assertSame('allen', $post->likers[1]['name']);
     }
 
     public function test_eager_loading()

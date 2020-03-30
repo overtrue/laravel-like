@@ -52,6 +52,6 @@ trait CanBeLiked
     public function likers()
     {
         return $this->belongsToMany(config('auth.providers.users.model'), config('like.likes_table'), 'likable_id', config('like.user_foreign_key'))
-            ->where('likable_type', static::class);
+            ->where('likable_type', $this->getMorphClass());
     }
 }

@@ -23,15 +23,15 @@ class LikeServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            \dirname(__DIR__).'/config/like.php' => config_path('like.php'),
+            \dirname(__DIR__) . '/config/like.php' => config_path('like.php'),
         ], 'config');
 
         $this->publishes([
-            \dirname(__DIR__).'/migrations/' => database_path('migrations'),
+            \dirname(__DIR__) . '/migrations/' => database_path('migrations'),
         ], 'migrations');
 
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(\dirname(__DIR__).'/migrations/');
+            $this->loadMigrationsFrom(\dirname(__DIR__) . '/migrations/');
         }
     }
 
@@ -41,7 +41,8 @@ class LikeServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            \dirname(__DIR__).'/config/like.php', 'like'
+            \dirname(__DIR__) . '/config/like.php',
+            'like'
         );
     }
 }
