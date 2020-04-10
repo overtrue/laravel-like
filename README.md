@@ -30,7 +30,7 @@ $ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvi
 
 ### Traits
 
-#### `Overtrue\LaravelLike\Traits\CanLike`
+#### `Overtrue\LaravelLike\Traits\Liker`
 
 ```php
 
@@ -41,13 +41,13 @@ use Overtrue\LaravelLike\Traits\Liker;
 
 class User extends Authenticatable
 {
-    use Notifiable, Liker;
+    use Liker;
     
     <...>
 }
 ```
 
-#### `Overtrue\LaravelLike\Traits\CanBeLiked`
+#### `Overtrue\LaravelLike\Traits\Likeable`
 
 ```php
 use Illuminate\Database\Eloquent\Model;
@@ -82,16 +82,6 @@ $likes = $user->likes()->with('likeable')->paginate(20);
 
 foreach ($likes as $like) {
     $like->likeable; // App\Post instance
-}
-```
-
-Get user liked items without pagination:
-
-```php
-$items = $user->likedItems(); 
-
-foreach ($items as $item) {
-    // $item: App\Post instance
 }
 ```
 
@@ -165,6 +155,16 @@ foreach($posts as $post) {
 | --- | --- |
 |  `Overtrue\LaravelLike\Events\Liked` | Triggered when the relationship is created. |
 |  `Overtrue\LaravelLike\Events\Unliked` | Triggered when the relationship is deleted. |
+
+## Related packages
+
+- Follow: [overtrue/laravel-follow](https://github.com/overtrue/laravel-follow)
+- Like: [overtrue/laravel-like](https://github.com/overtrue/laravel-like)
+- Favorite: [overtrue/laravel-favorite](https://github.com/overtrue/laravel-favorite)
+- Subscribe: [overtrue/laravel-subscribe](https://github.com/overtrue/laravel-subscribe)
+- Vote: overtrue/laravel-vote (working in progress)
+- Bookmark: overtrue/laravel-bookmark (working in progress)
+
 
 ## Contributing
 
