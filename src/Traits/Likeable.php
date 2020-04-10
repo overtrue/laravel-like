@@ -13,9 +13,9 @@ namespace Overtrue\LaravelLike\Traits;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Trait CanBeLiked.
+ * Trait Likeable.
  */
-trait CanBeLiked
+trait Likeable
 {
     /**
      * @param \Illuminate\Database\Eloquent\Model $user
@@ -26,7 +26,7 @@ trait CanBeLiked
     {
         if (\is_a($user, config('auth.providers.users.model'))) {
             if ($this->relationLoaded('likers')) {
-                return $this->likers->where($user->getKeyName(), $user->getKey())->count() > 0;
+                return $this->likers->contains($user);
             }
 
             return tap($this->relationLoaded('likes') ? $this->likes : $this->likes())
@@ -41,7 +41,7 @@ trait CanBeLiked
      */
     public function likes()
     {
-        return $this->morphMany(config('like.like_model'), 'likable');
+        return $this->morphMany(config('like.like_model'), 'likeable');
     }
 
     /**
@@ -51,7 +51,11 @@ trait CanBeLiked
      */
     public function likers()
     {
-        return $this->belongsToMany(config('auth.providers.users.model'), config('like.likes_table'), 'likable_id', config('like.user_foreign_key'))
-            ->where('likable_type', $this->getMorphClass());
+        return $this->belongsToMany(
+            config('auth.providers.users.model'),
+            config('like.likes_table'),
+            'likeable_id',
+            config('like.user_foreign_key'))
+            ->where('likeable_type', $this->getMorphClass());
     }
 }

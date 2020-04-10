@@ -11,14 +11,14 @@
 namespace Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Overtrue\LaravelLike\Traits\CanLike;
+use Overtrue\LaravelLike\Traits\Liker;
 
 /**
  * Class User.
  */
 class User extends Model
 {
-    use CanLike;
+    use Liker;
 
     protected $fillable = ['name'];
 }

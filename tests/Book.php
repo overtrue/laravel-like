@@ -11,14 +11,14 @@
 namespace Tests;
 
 use Illuminate\Database\Eloquent\Model;
-use Overtrue\LaravelLike\Traits\CanBeLiked;
+use Overtrue\LaravelLike\Traits\Likeable;
 
 /**
  * Class Book.
  */
 class Book extends Model
 {
-    use CanBeLiked;
+    use Likeable;
 
     protected $fillable = ['title'];
 }

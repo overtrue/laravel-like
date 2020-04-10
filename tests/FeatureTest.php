@@ -35,10 +35,13 @@ class FeatureTest extends TestCase
         $user = User::create(['name' => 'overtrue']);
         $post = Post::create(['title' => 'Hello world!']);
 
-        $this->assertInstanceOf(Like::class, $user->like($post));
+        $user->like($post);
 
         Event::assertDispatched(Liked::class, function ($event) use ($user, $post) {
-            return $event->target instanceof Post && $event->user instanceof User && $event->user->id === $user->id && $event->target->id === $post->id;
+            return $event->like->likeable instanceof Post
+                && $event->like->user instanceof User
+                && $event->like->user->id === $user->id
+                && $event->like->likeable->id === $post->id;
         });
 
         $this->assertTrue($user->hasLiked($post));
@@ -47,7 +50,10 @@ class FeatureTest extends TestCase
         $this->assertNull($user->unlike($post));
 
         Event::assertDispatched(Unliked::class, function ($event) use ($user, $post) {
-            return $event->target instanceof Post && $event->user instanceof User && $event->user->id === $user->id && $event->target->id === $post->id;
+            return $event->like->likeable instanceof Post
+                && $event->like->user instanceof User
+                && $event->like->user->id === $user->id
+                && $event->like->likeable->id === $post->id;
         });
     }
 
@@ -99,20 +105,15 @@ class FeatureTest extends TestCase
         $user1->like($post);
         $user2->like($post);
 
-        // start recording
-        $sqls = \collect([]);
-        \DB::listen(function ($query) use ($sqls) {
-            $sqls->push(['sql' => $query->sql, 'bindings' => $query->bindings]);
-        });
-
         $this->assertCount(2, $post->likers);
         $this->assertSame('overtrue', $post->likers[0]['name']);
         $this->assertSame('allen', $post->likers[1]['name']);
 
-        $sqls = \collect([]);
-        $this->assertTrue($post->isLikedBy($user1));
-        $this->assertTrue($post->isLikedBy($user2));
-        $this->assertFalse($post->isLikedBy($user3));
+        $sqls = $this->getQueryLog(function() use ($post, $user1, $user2, $user3) {
+            $this->assertTrue($post->isLikedBy($user1));
+            $this->assertTrue($post->isLikedBy($user2));
+            $this->assertFalse($post->isLikedBy($user3));
+        });
 
         $this->assertEmpty($sqls->all());
     }
@@ -152,33 +153,34 @@ class FeatureTest extends TestCase
         $user->like($book2);
 
         // start recording
+        $sqls = $this->getQueryLog(function() use ($user) {
+            $user->load('likes.likeable');
+        });
+
+        $this->assertSame(3, $sqls->count());
+
+        // from loaded relations
+        $sqls = $this->getQueryLog(function() use ($user, $post1) {
+            $user->hasLiked($post1);
+        });
+
+        $this->assertEmpty($sqls->all());
+    }
+
+    /**
+     * @param \Closure $callback
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getQueryLog(\Closure $callback): \Illuminate\Support\Collection
+    {
         $sqls = \collect([]);
         \DB::listen(function ($query) use ($sqls) {
             $sqls->push(['sql' => $query->sql, 'bindings' => $query->bindings]);
         });
 
-        $user->load('likes.likable');
+        $callback();
 
-        $this->assertSame(3, $sqls->count());
-        $this->assertSame([$post1->id, $post2->id], \array_map('intval', $sqls[1]['bindings']));
-
-        // from loaded relations
-        $sqls = \collect([]);
-        $user->hasLiked($post1);
-        $this->assertEmpty($sqls->all());
-
-        // eager loading liked objects
-        $items = $user->likedItems();
-        $this->assertCount(4, $items);
-        $this->assertInstanceOf(Post::class, $items[0]);
-        $this->assertInstanceOf(Post::class, $items[1]);
-        $this->assertInstanceOf(Book::class, $items[2]);
-        $this->assertInstanceOf(Book::class, $items[3]);
-
-        // filter by model name
-        $likedPosts = $user->likedItems(Post::class);
-        $this->assertCount(2, $likedPosts);
-        $this->assertInstanceOf(Post::class, $likedPosts[0]);
-        $this->assertInstanceOf(Post::class, $likedPosts[1]);
+        return $sqls;
     }
 }

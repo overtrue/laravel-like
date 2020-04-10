@@ -17,22 +17,15 @@ class Event
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
-    public $user;
-
-    /**
-     * @var \Illuminate\Database\Eloquent\Model
-     */
-    public $target;
+    public $like;
 
     /**
      * Event constructor.
      *
-     * @param \Illuminate\Database\Eloquent\Model $user
-     * @param \Illuminate\Database\Eloquent\Model $target
+     * @param \Illuminate\Database\Eloquent\Model $like
      */
-    public function __construct(Model $user, Model $target)
+    public function __construct(Model $like)
     {
-        $this->user = $user;
-        $this->target = $target;
+        $this->like = $like;
     }
 }

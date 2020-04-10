@@ -37,11 +37,11 @@ $ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvi
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Overtrue\LaravelLike\Traits\CanLike;
+use Overtrue\LaravelLike\Traits\Liker;
 
 class User extends Authenticatable
 {
-    use Notifiable, CanLike;
+    use Notifiable, Liker;
     
     <...>
 }
@@ -51,11 +51,11 @@ class User extends Authenticatable
 
 ```php
 use Illuminate\Database\Eloquent\Model;
-use Overtrue\LaravelLike\Traits\CanBeLiked;
+use Overtrue\LaravelLike\Traits\Likeable;
 
 class Post extends Model
 {
-    use CanBeLiked;
+    use Likeable;
 
     <...>
 }
@@ -78,10 +78,10 @@ $post->isLikedBy($user);
 Get user likes with pagination:
 
 ```php
-$likes = $user->likes()->with('likable')->paginate(20);
+$likes = $user->likes()->with('likeable')->paginate(20);
 
 foreach ($likes as $like) {
-    $like->likable; // App\Post instance
+    $like->likeable; // App\Post instance
 }
 ```
 
@@ -141,14 +141,14 @@ foreach($users as $user) {
 To avoid the N+1 issue, you can use eager loading to reduce this operation to just 2 queries. When querying, you may specify which relationships should be eager loaded using the `with` method:
 
 ```php
-// CanLike
+// Liker
 $users = App\User::with('likes')->get();
 
 foreach($users as $user) {
     $user->hasLiked($post);
 }
 
-// CanBeLiked
+// Likeable
 $posts = App\Post::with('likes')->get();
 // or 
 $posts = App\Post::with('likers')->get();

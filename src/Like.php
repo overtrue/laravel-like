@@ -12,12 +12,19 @@ namespace Overtrue\LaravelLike;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Overtrue\LaravelLike\Events\Liked;
+use Overtrue\LaravelLike\Events\Unliked;
 
 /**
- * Class Like8.
+ * Class Like.
  */
 class Like extends Model
 {
+    protected $dispatchesEvents = [
+        'created' => Liked::class,
+        'deleted' => Unliked::class,
+    ];
+
     /**
      * Like constructor.
      *
@@ -36,13 +43,29 @@ class Like extends Model
 
         self::saving(function ($like) {
             $userForeignKey = \config('like.user_foreign_key');
-            $like->{$userForeignKey} = $like->{$userForeignKey} ?: auth()->user()->getKey();
+            $like->{$userForeignKey} = $like->{$userForeignKey} ?: auth()->id();
         });
     }
 
-    public function likable()
+    public function likeable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(\config('auth.providers.users.model'), \config('like.user_foreign_key'));
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function liker()
+    {
+        return $this->user();
     }
 
     /**
@@ -53,6 +76,6 @@ class Like extends Model
      */
     public function scopeWithType(Builder $query, string $type)
     {
-        return $query->where('likable_type', app($type)->getMorphClass());
+        return $query->where('likeable_type', app($type)->getMorphClass());
     }
 }
