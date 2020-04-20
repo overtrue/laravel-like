@@ -1,7 +1,9 @@
-<h1 align="center"> Laravel Like </h1>
+Laravel Like 
+--- 
 
-<p align="center"> 👍 User-like features for Laravel Application.</p>
+👍 User-like features for Laravel Application.
 
+![CI](https://github.com/overtrue/laravel-like/workflows/CI/badge.svg)
 
 ## Installing
 
