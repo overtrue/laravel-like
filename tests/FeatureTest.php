@@ -10,7 +10,7 @@ use Overtrue\LaravelLike\Like;
 
 class FeatureTest extends TestCase
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -98,7 +98,7 @@ class FeatureTest extends TestCase
         $this->assertSame('overtrue', $post->likers[0]['name']);
         $this->assertSame('allen', $post->likers[1]['name']);
 
-        $sqls = $this->getQueryLog(function() use ($post, $user1, $user2, $user3) {
+        $sqls = $this->getQueryLog(function () use ($post, $user1, $user2, $user3) {
             $this->assertTrue($post->isLikedBy($user1));
             $this->assertTrue($post->isLikedBy($user2));
             $this->assertFalse($post->isLikedBy($user3));
@@ -142,14 +142,14 @@ class FeatureTest extends TestCase
         $user->like($book2);
 
         // start recording
-        $sqls = $this->getQueryLog(function() use ($user) {
+        $sqls = $this->getQueryLog(function () use ($user) {
             $user->load('likes.likeable');
         });
 
         $this->assertSame(3, $sqls->count());
 
         // from loaded relations
-        $sqls = $this->getQueryLog(function() use ($user, $post1) {
+        $sqls = $this->getQueryLog(function () use ($user, $post1) {
             $user->hasLiked($post1);
         });
 
