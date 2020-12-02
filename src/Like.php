@@ -1,26 +1,16 @@
 <?php
-
-/*
- * This file is part of the overtrue/laravel-like
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Overtrue\LaravelLike;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Overtrue\LaravelLike\Events\Liked;
 use Overtrue\LaravelLike\Events\Unliked;
 
-/**
- * Class Like.
- */
 class Like extends Model
 {
+    protected $guarded = [];
+
     protected $dispatchesEvents = [
         'created' => Liked::class,
         'deleted' => Unliked::class,
@@ -45,6 +35,11 @@ class Like extends Model
         self::saving(function ($like) {
             $userForeignKey = \config('like.user_foreign_key');
             $like->{$userForeignKey} = $like->{$userForeignKey} ?: auth()->id();
+
+
+            if (\config('like.uuids')) {
+                $like->{$like->getKeyName()} = $like->{$like->getKeyName()} ?: (string) Str::orderedUuid();
+            }
         });
     }
 

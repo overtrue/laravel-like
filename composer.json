@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "^5.5||~6.0||^7.0||^8.0"
+        "laravel/framework": "^7.0|^8.0"
     },
     "autoload": {
         "psr-4": {
@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.2",
-        "phpunit/phpunit": "~9.0",
+        "phpunit/phpunit": "^9.0",
         "orchestra/testbench": "^6.0",
         "brainmaestro/composer-git-hooks": "^2.7",
         "friendsofphp/php-cs-fixer": "^2.16"
@@ -39,17 +39,13 @@
                 "composer test",
                 "composer fix-style"
             ],
-            "pre-push": [
-                "composer test",
-                "composer check-style"
-            ]
+            "post-merge": "composer install"
         }
     },
     "scripts": {
         "post-update-cmd": [
             "cghooks update"
         ],
-        "post-merge": "composer install",
         "post-install-cmd": [
             "cghooks add --ignore-lock",
             "cghooks update"
