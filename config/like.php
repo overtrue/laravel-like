@@ -1,6 +1,11 @@
 <?php
 
 return [
+    /**
+     * Use uuid as primary key.
+     */
+    'uuids' => false,
+
     /*
      * User tables foreign key name.
      */

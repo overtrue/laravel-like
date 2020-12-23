@@ -1,13 +1,5 @@
 <?php
 
-/*
- * This file is part of the overtrue/laravel-like.
- *
- * (c) overtrue <anzhengchao@gmail.com>
- *
- * This source file is subject to the MIT license that is bundled.
- */
-
 namespace Tests;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -16,9 +8,6 @@ use Overtrue\LaravelLike\Events\Liked;
 use Overtrue\LaravelLike\Events\Unliked;
 use Overtrue\LaravelLike\Like;
 
-/**
- * Class FeatureTest.
- */
 class FeatureTest extends TestCase
 {
     public function setUp(): void
