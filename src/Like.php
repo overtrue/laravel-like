@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the overtrue/laravel-like
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Overtrue\LaravelLike;
 
 use Illuminate\Database\Eloquent\Builder;
@@ -16,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Overtrue\LaravelLike\Events\Liked;
 use Overtrue\LaravelLike\Events\Unliked;
 
-/**
- * Class Like.
- */
 class Like extends Model
 {
     protected $dispatchesEvents = [
@@ -27,8 +15,6 @@ class Like extends Model
     ];
 
     /**
-     * Like constructor.
-     *
      * @param array $attributes
      */
     public function __construct(array $attributes = [])
@@ -48,7 +34,7 @@ class Like extends Model
         });
     }
 
-    public function likeable()
+    public function likeable(): \Illuminate\Database\Eloquent\Relations\MorphTo
     {
         return $this->morphTo();
     }

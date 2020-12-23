@@ -45,7 +45,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     /**
      * run package database migrations.
      */
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->loadMigrationsFrom(__DIR__.'/migrations');

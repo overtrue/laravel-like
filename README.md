@@ -121,10 +121,18 @@ $post->likers()->count();
 List with `*_count` attribute:
 
 ```php
+// likes_count
 $users = User::withCount('likes')->get();
 
 foreach($users as $user) {
-    echo $user->likes_count;
+    // $user->likes_count;
+}
+
+// likers_count
+$posts = User::withCount('likers')->get();
+
+foreach($posts as $post) {
+    // $post->likes_count;
 }
 ```
 

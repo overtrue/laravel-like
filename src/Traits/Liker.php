@@ -1,61 +1,74 @@
 <?php
 
-/*
- * This file is part of the overtrue/laravel-like
- *
- * (c) overtrue <i@overtrue.me>
- *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Overtrue\LaravelLike\Traits;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Overtrue\LaravelLike\Like;
 
-/**
- * Trait Liker.
- */
 trait Liker
 {
     /**
-     * @param \Illuminate\Database\Eloquent\Model $object
-     * @return Like|null
+     * @param  \Illuminate\Database\Eloquent\Model  $object
+     *
+     * @return Like
      */
-    public function like(Model $object)
+    public function like(Model $object): Like
     {
-        /* @var \Overtrue\LaravelLike\Traits\Likeable $object */
-        if (!$this->hasLiked($object)) {
-            $like = app(config('like.like_model'));
-            $like->{config('like.user_foreign_key')} = $this->getKey();
+        $attributes = [
+            'likeable_type' => $object->getMorphClass(),
+            'likeable_id' => $object->getKey(),
+            config('like.user_foreign_key') => $this->getKey(),
+        ];
 
-            $object->likes()->save($like);
-        }
+        /* @var \Illuminate\Database\Eloquent\Model $like */
+        $like = \app(config('like.like_model'));
 
-        return null;
+        /* @var \Overtrue\LaravelLike\Traits\Likeable|\Illuminate\Database\Eloquent\Model $object */
+        return $like->where($attributes)->firstOr(
+            function () use ($like, $attributes) {
+                $like->unguard();
+
+                if ($this->relationLoaded('likes')) {
+                    $this->unsetRelation('likes');
+                }
+
+                return $like->create($attributes);
+            }
+        );
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $object
-     * @return null
+     * @param  \Illuminate\Database\Eloquent\Model  $object
+     *
+     * @return bool
+     * @throws \Exception
      */
-    public function unlike(Model $object)
+    public function unlike(Model $object): bool
     {
-        $relation = $object->likes()
+        /* @var \Overtrue\LaravelLike\Like $relation */
+        $relation = \app(config('like.like_model'))
             ->where('likeable_id', $object->getKey())
             ->where('likeable_type', $object->getMorphClass())
             ->where(config('like.user_foreign_key'), $this->getKey())
             ->first();
 
         if ($relation) {
-            $relation->delete();
+            if ($this->relationLoaded('likes')) {
+                $this->unsetRelation('likes');
+            }
+
+            return $relation->delete();
         }
+
+        return true;
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $object
+     * @param  \Illuminate\Database\Eloquent\Model  $object
+     *
      * @return Like|null
+     * @throws \Exception
      */
     public function toggleLike(Model $object)
     {
@@ -63,22 +76,19 @@ trait Liker
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $object
+     * @param  \Illuminate\Database\Eloquent\Model  $object
      *
      * @return bool
      */
-    public function hasLiked(Model $object)
+    public function hasLiked(Model $object): bool
     {
         return ($this->relationLoaded('likes') ? $this->likes : $this->likes())
-            ->where('likeable_id', $object->getKey())
-            ->where('likeable_type', $object->getMorphClass())
-            ->count() > 0;
+                ->where('likeable_id', $object->getKey())
+                ->where('likeable_type', $object->getMorphClass())
+                ->count() > 0;
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function likes()
+    public function likes(): HasMany
     {
         return $this->hasMany(config('like.like_model'), config('like.user_foreign_key'), $this->getKeyName());
     }

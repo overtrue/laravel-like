@@ -21,7 +21,7 @@ use Overtrue\LaravelLike\Like;
  */
 class FeatureTest extends TestCase
 {
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -47,7 +47,7 @@ class FeatureTest extends TestCase
         $this->assertTrue($user->hasLiked($post));
         $this->assertTrue($post->isLikedBy($user));
 
-        $this->assertNull($user->unlike($post));
+        $this->assertTrue($user->unlike($post));
 
         Event::assertDispatched(Unliked::class, function ($event) use ($user, $post) {
             return $event->like->likeable instanceof Post
@@ -94,6 +94,18 @@ class FeatureTest extends TestCase
         $this->assertSame(2, $user->likes()->withType(Book::class)->count());
     }
 
+    public function test_like_same_model()
+    {
+        $user1 = User::create(['name' => 'overtrue']);
+        $user2 = User::create(['name' => 'allen']);
+        $user3 = User::create(['name' => 'taylor']);
+
+        $user1->like($user2);
+
+        $this->assertTrue($user1->hasLiked($user2));
+        $this->assertTrue($user2->isLikedBy($user1));
+    }
+
     public function test_object_likers()
     {
         $user1 = User::create(['name' => 'overtrue']);
@@ -109,7 +121,7 @@ class FeatureTest extends TestCase
         $this->assertSame('overtrue', $post->likers[0]['name']);
         $this->assertSame('allen', $post->likers[1]['name']);
 
-        $sqls = $this->getQueryLog(function() use ($post, $user1, $user2, $user3) {
+        $sqls = $this->getQueryLog(function () use ($post, $user1, $user2, $user3) {
             $this->assertTrue($post->isLikedBy($user1));
             $this->assertTrue($post->isLikedBy($user2));
             $this->assertFalse($post->isLikedBy($user3));
@@ -153,14 +165,14 @@ class FeatureTest extends TestCase
         $user->like($book2);
 
         // start recording
-        $sqls = $this->getQueryLog(function() use ($user) {
+        $sqls = $this->getQueryLog(function () use ($user) {
             $user->load('likes.likeable');
         });
 
         $this->assertSame(3, $sqls->count());
 
         // from loaded relations
-        $sqls = $this->getQueryLog(function() use ($user, $post1) {
+        $sqls = $this->getQueryLog(function () use ($user, $post1) {
             $user->hasLiked($post1);
         });
 
