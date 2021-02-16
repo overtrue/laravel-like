@@ -92,4 +92,20 @@ trait Liker
     {
         return $this->hasMany(config('like.like_model'), config('like.user_foreign_key'), $this->getKeyName());
     }
+    
+    /**
+     * Get Query Builder for likes
+     *
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function getLikedItems(string $model)
+    {
+        return app($model)->whereHas(
+            'likers',
+            function ($q) {
+                return $q->where(config('like.user_foreign_key'), $this->getKey());
+            }
+        );
+    }
+    
 }
