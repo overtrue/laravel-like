@@ -27,7 +27,7 @@ trait Liker
         /* @var \Overtrue\LaravelLike\Traits\Likeable|\Illuminate\Database\Eloquent\Model $object */
         return $like->where($attributes)->firstOr(
             function () use ($like, $attributes) {
-                return $like->unguarded(function() use ($like, $attributes) {
+                return $like->unguarded(function () use ($like, $attributes) {
                     if ($this->relationLoaded('likes')) {
                         $this->unsetRelation('likes');
                     }
@@ -107,5 +107,4 @@ trait Liker
             }
         );
     }
-
 }
