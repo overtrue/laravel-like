@@ -27,13 +27,13 @@ trait Liker
         /* @var \Overtrue\LaravelLike\Traits\Likeable|\Illuminate\Database\Eloquent\Model $object */
         return $like->where($attributes)->firstOr(
             function () use ($like, $attributes) {
-                $like->unguard();
+                return $like->unguarded(function() use ($like, $attributes) {
+                    if ($this->relationLoaded('likes')) {
+                        $this->unsetRelation('likes');
+                    }
 
-                if ($this->relationLoaded('likes')) {
-                    $this->unsetRelation('likes');
-                }
-
-                return $like->create($attributes);
+                    return $like->create($attributes);
+                });
             }
         );
     }
@@ -92,7 +92,7 @@ trait Liker
     {
         return $this->hasMany(config('like.like_model'), config('like.user_foreign_key'), $this->getKeyName());
     }
-    
+
     /**
      * Get Query Builder for likes
      *
@@ -107,5 +107,5 @@ trait Liker
             }
         );
     }
-    
+
 }
