@@ -18,10 +18,6 @@ class LikeServiceProvider extends ServiceProvider
         $this->publishes([
             \dirname(__DIR__) . '/migrations/' => database_path('migrations'),
         ], 'migrations');
-
-        if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom(\dirname(__DIR__) . '/migrations/');
-        }
     }
 
     /**

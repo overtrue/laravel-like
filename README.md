@@ -1,5 +1,4 @@
-Laravel Like 
---- 
+# Laravel Like
 
 👍 User-like features for Laravel Application.
 
@@ -10,7 +9,7 @@ Laravel Like
 ## Installing
 
 ```shell
-$ composer require overtrue/laravel-like -vvv
+composer require overtrue/laravel-like -vvv
 ```
 
 ### Configuration
@@ -18,7 +17,7 @@ $ composer require overtrue/laravel-like -vvv
 This step is optional
 
 ```php
-$ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=config
+php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=config
 ```
 
 ### Migrations
@@ -26,9 +25,8 @@ $ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvi
 This step is also optional, if you want to custom likes table, you can publish the migration files:
 
 ```php
-$ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=migrations
+php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=migrations
 ```
-
 
 ## Usage
 
@@ -46,7 +44,7 @@ use Overtrue\LaravelLike\Traits\Liker;
 class User extends Authenticatable
 {
     use Liker;
-    
+
     <...>
 }
 ```
@@ -75,8 +73,8 @@ $user->like($post);
 $user->unlike($post);
 $user->toggleLike($post);
 
-$user->hasLiked($post); 
-$post->isLikedBy($user); 
+$user->hasLiked($post);
+$post->isLikedBy($user);
 ```
 
 Get user likes with pagination:
@@ -111,10 +109,10 @@ foreach($likers as $user) {
 
 ```php
 // all
-$user->likes()->count(); 
+$user->likes()->count();
 
 // with type
-$user->likes()->withType(Post::class)->count(); 
+$user->likes()->withType(Post::class)->count();
 
 // likers count
 $post->likers()->count();
@@ -152,7 +150,7 @@ foreach($users as $user) {
 
 // Likeable
 $posts = App\Post::with('likes')->get();
-// or 
+// or
 $posts = App\Post::with('likers')->get();
 
 foreach($posts as $post) {
@@ -160,24 +158,23 @@ foreach($posts as $post) {
 }
 ```
 
-
 ### Events
 
-| **Event** | **Description** |
-| --- | --- |
-|  `Overtrue\LaravelLike\Events\Liked` | Triggered when the relationship is created. |
-|  `Overtrue\LaravelLike\Events\Unliked` | Triggered when the relationship is deleted. |
+| **Event**                             | **Description**                             |
+| ------------------------------------- | ------------------------------------------- |
+| `Overtrue\LaravelLike\Events\Liked`   | Triggered when the relationship is created. |
+| `Overtrue\LaravelLike\Events\Unliked` | Triggered when the relationship is deleted. |
 
 ## Related packages
 
-- Follow: [overtrue/laravel-follow](https://github.com/overtrue/laravel-follow)
-- Like: [overtrue/laravel-like](https://github.com/overtrue/laravel-like)
-- Favorite: [overtrue/laravel-favorite](https://github.com/overtrue/laravel-favorite)
-- Subscribe: [overtrue/laravel-subscribe](https://github.com/overtrue/laravel-subscribe)
-- Vote: [overtrue/laravel-vote](https://github.com/overtrue/laravel-vote)
-- Bookmark: overtrue/laravel-bookmark (working in progress)
+-   Follow: [overtrue/laravel-follow](https://github.com/overtrue/laravel-follow)
+-   Like: [overtrue/laravel-like](https://github.com/overtrue/laravel-like)
+-   Favorite: [overtrue/laravel-favorite](https://github.com/overtrue/laravel-favorite)
+-   Subscribe: [overtrue/laravel-subscribe](https://github.com/overtrue/laravel-subscribe)
+-   Vote: [overtrue/laravel-vote](https://github.com/overtrue/laravel-vote)
+-   Bookmark: overtrue/laravel-bookmark (working in progress)
 
-## :heart: Sponsor me 
+## :heart: Sponsor me
 
 [![Sponsor me](https://github.com/overtrue/overtrue/blob/master/sponsor-me.svg?raw=true)](https://github.com/sponsors/overtrue)
 
@@ -188,8 +185,6 @@ foreach($posts as $post) {
 Many thanks to Jetbrains for kindly providing a license for me to work on this and other open-source projects.
 
 [![](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)](https://www.jetbrains.com/?from=https://github.com/overtrue)
-
-
 
 ## Contributing
 
