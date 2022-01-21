@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Overtrue\LaravelFavorite\Traits\Favoriteable;
 use Overtrue\LaravelLike\Like;
 
 trait Liker
