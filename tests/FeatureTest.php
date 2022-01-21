@@ -167,6 +167,51 @@ class FeatureTest extends TestCase
         $this->assertEmpty($sqls->all());
     }
 
+    public function test_liker_can_attach_like_status_to_votable_collection()
+    {
+        /* @var \Tests\Post $post1 */
+        $post1 = Post::create(['title' => 'Post title1']);
+        /* @var \Tests\Post $post2 */
+        $post2 = Post::create(['title' => 'Post title2']);
+        /* @var \Tests\Post $post3 */
+        $post3 = Post::create(['title' => 'Post title3']);
+
+        /* @var \Tests\User $user */
+        $user = User::create(['name' => 'overtrue']);
+
+        $user->like($post1);
+        $user->like($post2);
+
+        $posts = Post::oldest('id')->get();
+
+        $user->attachLikeStatus($posts);
+
+        $posts = $posts->toArray();
+
+        // user has up liked post1
+        $this->assertTrue($posts[0]['has_liked']);
+
+        // user has down liked post2
+        $this->assertTrue($posts[1]['has_liked']);
+
+        // user hasn't liked post3
+        $this->assertFalse($posts[2]['has_liked']);
+
+        // custom resolver
+        $posts = [['post' => $post1], ['post' => $post2], ['post' => $post3]];
+
+        $posts = $user->attachLikeStatus($posts, fn ($i) => $i['post']);
+
+        // user has up liked post1
+        $this->assertTrue($posts[0]['post']['has_liked']);
+
+        // user has down liked post2
+        $this->assertTrue($posts[1]['post']['has_liked']);
+
+        // user hasn't liked post3
+        $this->assertFalse($posts[2]['post']['has_liked']);
+    }
+
     /**
      * @param \Closure $callback
      *

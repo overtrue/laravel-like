@@ -2,8 +2,12 @@
 
 namespace Overtrue\LaravelLike\Traits;
 
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
+use Overtrue\LaravelFavorite\Traits\Favoriteable;
 use Overtrue\LaravelLike\Like;
 
 trait Liker
@@ -106,5 +110,46 @@ trait Liker
                 return $q->where(config('like.user_foreign_key'), $this->getKey());
             }
         );
+    }
+
+    public function attachLikeStatus($likeables, callable $resolver = null)
+    {
+        $returnFirst = false;
+        $toArray = false;
+
+        switch (true) {
+            case $likeables instanceof Model:
+                $returnFirst = true;
+                $likeables = \collect([$likeables]);
+                break;
+            case $likeables instanceof LengthAwarePaginator:
+                $likeables = $likeables->getCollection();
+                break;
+            case $likeables instanceof Paginator:
+                $likeables = \collect($likeables->items());
+                break;
+            case \is_array($likeables):
+                $likeables = \collect($likeables);
+                $toArray = true;
+                break;
+        }
+
+        \abort_if(!($likeables instanceof Collection), 422, 'Invalid $likeables type.');
+
+        $liked = $this->likes()->get()->keyBy(function ($item) {
+            return \sprintf('%s-%s', $item->likeable_type, $item->likeable_id);
+        });
+
+        $likeables->map(function ($likeable) use ($liked, $resolver) {
+            $resolver = $resolver ?? fn ($m) => $m;
+            $likeable = $resolver($likeable);
+
+            if ($likeable && \in_array(Likeable::class, \class_uses_recursive($likeable))) {
+                $key = \sprintf('%s-%s', $likeable->getMorphClass(), $likeable->getKey());
+                $likeable->setAttribute('has_liked', $liked->has($key));
+            }
+        });
+
+        return $returnFirst ? $likeables->first() : ($toArray ? $likeables->all() : $likeables);
     }
 }

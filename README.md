@@ -158,6 +158,71 @@ foreach($posts as $post) {
 }
 ```
 
+Of course we have a better solution, which can be found in the following section：
+
+### Attach user like status to likeable collection
+
+You can use `Liker::attachLikeStatus($likeables)` to attach the user like status, it will attach `has_liked` attribute to each model of `$likeables`:
+
+#### For model
+```php
+$post = Post::find(1);
+
+$post = $user->attachLikeStatus($post);
+
+// result
+[
+    "id" => 1
+    "title" => "Add socialite login support."
+    "created_at" => "2021-05-20T03:26:16.000000Z"
+    "updated_at" => "2021-05-20T03:26:16.000000Z"
+    "has_liked" => true
+ ],
+```
+
+#### For `Collection | Paginator | LengthAwarePaginator | array`:
+
+```php
+$posts = Post::oldest('id')->get();
+
+$posts = $user->attachLikeStatus($posts);
+
+$posts = $posts->toArray();
+
+// result
+[
+  [
+    "id" => 1
+    "title" => "Post title1"
+    "created_at" => "2021-05-20T03:26:16.000000Z"
+    "updated_at" => "2021-05-20T03:26:16.000000Z"
+    "has_liked" => true
+  ],
+  [
+    "id" => 2
+    "title" => "Post title2"
+    "created_at" => "2021-05-20T03:26:16.000000Z"
+    "updated_at" => "2021-05-20T03:26:16.000000Z"
+    "has_liked" => fasle
+  ],
+  [
+    "id" => 3
+    "title" => "Post title3"
+    "created_at" => "2021-05-20T03:26:16.000000Z"
+    "updated_at" => "2021-05-20T03:26:16.000000Z"
+    "has_liked" => true
+  ],
+]
+```
+
+#### For pagination
+
+```php
+$posts = Post::paginate(20);
+
+$user->attachLikeStatus($posts);
+```
+
 ### Events
 
 | **Event**                             | **Description**                             |
