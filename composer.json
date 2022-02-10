@@ -1,6 +1,6 @@
 {
     "name": "overtrue/laravel-like",
-    "description": "\uD83D\uDC4D User-like features for Laravel Application.",
+    "description": "👍 User-like features for Laravel Application.",
     "license": "MIT",
     "authors": [
         {
@@ -9,8 +9,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "laravel/framework": "^7.0 || ^8.0"
+        "laravel/framework": "^9.0"
     },
     "autoload": {
         "psr-4": {
@@ -23,11 +22,9 @@
         }
     },
     "require-dev": {
-        "laravel/framework": "^8.0",
-        "mockery/mockery": "^1.2",
-        "phpunit/phpunit": "^9.3.8",
-        "orchestra/testbench": "^6.7.0",
-        "brainmaestro/composer-git-hooks": "^2.7",
+        "mockery/mockery": "^1.4",
+        "phpunit/phpunit": "^9.5",
+        "orchestra/testbench": "^7.0",
         "friendsofphp/php-cs-fixer": "^3.0.0"
     },
     "extra": {
