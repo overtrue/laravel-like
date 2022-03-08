@@ -17,7 +17,7 @@ composer require overtrue/laravel-like -vvv
 This step is optional
 
 ```php
-php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=config
+php artisan vendor:publish
 ```
 
 ### Migrations
@@ -25,7 +25,7 @@ php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvide
 This step is also optional, if you want to custom likes table, you can publish the migration files:
 
 ```php
-php artisan vendor:publish --provider="Overtrue\\LaravelLike\\LikeServiceProvider" --tag=migrations
+php artisan vendor:publish
 ```
 
 ## Usage
