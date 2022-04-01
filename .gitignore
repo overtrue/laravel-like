@@ -8,3 +8,4 @@ composer.lock
 .php_cs.cache
 .phpunit.result.cache
 .phplint-cache
+.php-cs-fixer.cache

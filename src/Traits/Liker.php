@@ -2,11 +2,13 @@
 
 namespace Overtrue\LaravelLike\Traits;
 
+use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Enumerable;
+use Illuminate\Support\LazyCollection;
 use Overtrue\LaravelLike\Like;
 
 trait Liker
@@ -125,7 +127,11 @@ trait Liker
                 $likeables = $likeables->getCollection();
                 break;
             case $likeables instanceof Paginator:
+            case $likeables instanceof CursorPaginator:
                 $likeables = \collect($likeables->items());
+                break;
+            case $likeables instanceof LazyCollection:
+                $likeables = \collect(\iterator_to_array($likeables->getIterator()));
                 break;
             case \is_array($likeables):
                 $likeables = \collect($likeables);
@@ -133,10 +139,10 @@ trait Liker
                 break;
         }
 
-        \abort_if(!($likeables instanceof Collection), 422, 'Invalid $likeables type.');
+        \abort_if(!($likeables instanceof Enumerable), 422, 'Invalid $likeables type');
 
         $liked = $this->likes()->get()->keyBy(function ($item) {
-            return \sprintf('%s-%s', $item->likeable_type, $item->likeable_id);
+            return \sprintf('%s:%s', $item->likeable_type, $item->likeable_id);
         });
 
         $likeables->map(function ($likeable) use ($liked, $resolver) {
@@ -144,7 +150,7 @@ trait Liker
             $likeable = $resolver($likeable);
 
             if ($likeable && \in_array(Likeable::class, \class_uses_recursive($likeable))) {
-                $key = \sprintf('%s-%s', $likeable->getMorphClass(), $likeable->getKey());
+                $key = \sprintf('%s:%s', $likeable->getMorphClass(), $likeable->getKey());
                 $likeable->setAttribute('has_liked', $liked->has($key));
             }
         });
