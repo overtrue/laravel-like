@@ -131,7 +131,7 @@ trait Liker
                 $likeables = \collect($likeables->items());
                 break;
             case $likeables instanceof LazyCollection:
-                $likeables = \collect(\iterator_to_array($likeables->getIterator()));
+                $likeables = \collect($likeables->all());
                 break;
             case \is_array($likeables):
                 $likeables = \collect($likeables);
