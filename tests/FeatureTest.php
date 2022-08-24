@@ -182,21 +182,30 @@ class FeatureTest extends TestCase
         $user->like($post1);
         $user->like($post2);
 
+        // model
+        $post1 = Post::find($post1->id);
+        $this->assertNull($post1->has_liked);
+        $user->attachLikeStatus($post1);
+        $this->assertTrue($post1->has_liked);
+
+        // collection
         $posts = Post::oldest('id')->get();
         $user->attachLikeStatus($posts);
-        $posts = $posts->toArray();
-
-        // user has up liked post1
         $this->assertTrue($posts[0]['has_liked']);
-        // user has down liked post2
         $this->assertTrue($posts[1]['has_liked']);
-        // user hasn't liked post3
+        $this->assertFalse($posts[2]['has_liked']);
+
+        // lazy collection
+        $posts = Post::oldest('id')->cursor();
+        $user->attachLikeStatus($posts);
+        $posts = $posts->toArray();
+        $this->assertTrue($posts[0]['has_liked']);
+        $this->assertTrue($posts[1]['has_liked']);
         $this->assertFalse($posts[2]['has_liked']);
 
         // paginator
         $posts = Post::oldest('id')->paginate();
         $user->attachLikeStatus($posts);
-        $posts = $posts->toArray()['data'];
         $this->assertTrue($posts[0]['has_liked']);
         $this->assertTrue($posts[1]['has_liked']);
         $this->assertFalse($posts[2]['has_liked']);
@@ -204,28 +213,23 @@ class FeatureTest extends TestCase
         // cursor paginator
         $posts = Post::oldest('id')->cursorPaginate();
         $user->attachLikeStatus($posts);
-        $posts = $posts->toArray()['data'];
         $this->assertTrue($posts[0]['has_liked']);
         $this->assertTrue($posts[1]['has_liked']);
         $this->assertFalse($posts[2]['has_liked']);
 
-        // cursor
-        $posts = Post::oldest('id')->cursor();
-        $posts = $user->attachLikeStatus($posts);
-        $posts = $posts->toArray();
+        // array
+        $posts = Post::oldest('id')->get()->all();
+        $user->attachLikeStatus($posts);
         $this->assertTrue($posts[0]['has_liked']);
         $this->assertTrue($posts[1]['has_liked']);
         $this->assertFalse($posts[2]['has_liked']);
 
         // custom resolver
         $posts = [['post' => $post1], ['post' => $post2], ['post' => $post3]];
-        $posts = $user->attachLikeStatus($posts, fn ($i) => $i['post']);
+        $user->attachLikeStatus($posts, fn ($i) => $i['post']);
 
-        // user has up liked post1
         $this->assertTrue($posts[0]['post']['has_liked']);
-        // user has down liked post2
         $this->assertTrue($posts[1]['post']['has_liked']);
-        // user hasn't liked post3
         $this->assertFalse($posts[2]['post']['has_liked']);
     }
 
