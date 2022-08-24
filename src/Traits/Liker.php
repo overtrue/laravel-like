@@ -101,7 +101,7 @@ trait Liker
     /**
      * Get Query Builder for likes
      *
-     * @return Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function getLikedItems(string $model)
     {
