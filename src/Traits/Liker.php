@@ -2,15 +2,12 @@
 
 namespace Overtrue\LaravelLike\Traits;
 
-use Illuminate\Contracts\Pagination\CursorPaginator;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\AbstractCursorPaginator;
 use Illuminate\Pagination\AbstractPaginator;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Enumerable;
 use Illuminate\Support\LazyCollection;
 use Overtrue\LaravelLike\Like;
 
@@ -122,7 +119,7 @@ trait Liker
             return \sprintf('%s:%s', $item->likeable_type, $item->likeable_id);
         });
 
-        $attachStatus = function($likeable) use ($likes, $resolver) {
+        $attachStatus = function ($likeable) use ($likes, $resolver) {
             $resolver = $resolver ?? fn ($m) => $m;
             $likeable = $resolver($likeable);
 
