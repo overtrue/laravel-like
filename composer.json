@@ -25,7 +25,9 @@
         "mockery/mockery": "^1.4",
         "phpunit/phpunit": "^9.5",
         "orchestra/testbench": "^7.0",
-        "friendsofphp/php-cs-fixer": "^3.0.0"
+        "friendsofphp/php-cs-fixer": "^3.0.0",
+        "brainmaestro/composer-git-hooks": "dev-master",
+        "laravel/pint": "^1.2"
     },
     "extra": {
         "laravel": {
@@ -50,8 +52,8 @@
             "cghooks update"
         ],
         "cghooks": "vendor/bin/cghooks",
-        "check-style": "php-cs-fixer fix --using-cache=no --diff --dry-run --ansi",
-        "fix-style": "php-cs-fixer fix --using-cache=no --ansi",
+        "check-style": "vendor/bin/pint --test",
+        "fix-style": "vendor/bin/pint",
         "test": "vendor/bin/phpunit --colors=always"
     },
     "scripts-descriptions": {

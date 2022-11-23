@@ -14,7 +14,7 @@ class Event
     /**
      * Event constructor.
      *
-     * @param \Illuminate\Database\Eloquent\Model $like
+     * @param  \Illuminate\Database\Eloquent\Model  $like
      */
     public function __construct(Model $like)
     {

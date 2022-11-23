@@ -234,8 +234,7 @@ class FeatureTest extends TestCase
     }
 
     /**
-     * @param \Closure $callback
-     *
+     * @param  \Closure  $callback
      * @return \Illuminate\Support\Collection
      */
     protected function getQueryLog(\Closure $callback): \Illuminate\Support\Collection

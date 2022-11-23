@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 trait Likeable
 {
     /**
-     * @param \Illuminate\Database\Eloquent\Model $user
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $user
      * @return bool
      */
     public function isLikedBy(Model $user): bool

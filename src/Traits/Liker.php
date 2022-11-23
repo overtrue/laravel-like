@@ -15,7 +15,6 @@ trait Liker
 {
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $object
-     *
      * @return Like
      */
     public function like(Model $object): Like
@@ -45,8 +44,8 @@ trait Liker
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $object
-     *
      * @return bool
+     *
      * @throws \Exception
      */
     public function unlike(Model $object): bool
@@ -71,8 +70,8 @@ trait Liker
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $object
-     *
      * @return Like|null
+     *
      * @throws \Exception
      */
     public function toggleLike(Model $object)
@@ -82,7 +81,6 @@ trait Liker
 
     /**
      * @param  \Illuminate\Database\Eloquent\Model  $object
-     *
      * @return bool
      */
     public function hasLiked(Model $object): bool
