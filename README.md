@@ -2,7 +2,7 @@
 
 👍 User-like features for Laravel Application.
 
-![CI](https://github.com/overtrue/laravel-like/workflows/CI/badge.svg)
+[![CI](https://github.com/overtrue/laravel-like/actions/workflows/ci.yml/badge.svg)](https://github.com/overtrue/laravel-like/actions/workflows/ci.yml)
 
 [![Sponsor me](https://github.com/overtrue/overtrue/blob/master/sponsor-me-button-s.svg?raw=true)](https://github.com/sponsors/overtrue)
 
