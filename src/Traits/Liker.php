@@ -13,10 +13,6 @@ use Overtrue\LaravelLike\Like;
 
 trait Liker
 {
-    /**
-     * @param  \Illuminate\Database\Eloquent\Model  $object
-     * @return Like
-     */
     public function like(Model $object): Like
     {
         $attributes = [
@@ -43,9 +39,6 @@ trait Liker
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Model  $object
-     * @return bool
-     *
      * @throws \Exception
      */
     public function unlike(Model $object): bool
@@ -69,7 +62,6 @@ trait Liker
     }
 
     /**
-     * @param  \Illuminate\Database\Eloquent\Model  $object
      * @return Like|null
      *
      * @throws \Exception
@@ -79,10 +71,6 @@ trait Liker
         return $this->hasLiked($object) ? $this->unlike($object) : $this->like($object);
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Model  $object
-     * @return bool
-     */
     public function hasLiked(Model $object): bool
     {
         return ($this->relationLoaded('likes') ? $this->likes : $this->likes())

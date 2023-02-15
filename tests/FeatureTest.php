@@ -233,10 +233,6 @@ class FeatureTest extends TestCase
         $this->assertFalse($posts[2]['post']['has_liked']);
     }
 
-    /**
-     * @param  \Closure  $callback
-     * @return \Illuminate\Support\Collection
-     */
     protected function getQueryLog(\Closure $callback): \Illuminate\Support\Collection
     {
         $sqls = \collect([]);
