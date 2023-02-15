@@ -23,7 +23,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "phpunit/phpunit": "^9.0|10.0",
+        "phpunit/phpunit": "^10.0.7",
         "orchestra/testbench": "^8.0",
         "friendsofphp/php-cs-fixer": "^3.0.0",
         "brainmaestro/composer-git-hooks": "dev-master",
