@@ -48,7 +48,7 @@ class Like extends Model
      */
     public function user()
     {
-        return $this->belongsTo(\config('auth.providers.users.model'), \config('like.user_foreign_key'));
+        return $this->belongsTo(\config('like.user_model'), \config('like.user_foreign_key'));
     }
 
     /**
