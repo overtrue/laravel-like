@@ -20,4 +20,6 @@ return [
      * Model name for like record.
      */
     'like_model' => \Overtrue\LaravelLike\Like::class,
+    
+    'user_model' => App\Models\User::class,
 ];
