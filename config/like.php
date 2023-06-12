@@ -20,6 +20,9 @@ return [
      * Model name for like record.
      */
     'like_model' => \Overtrue\LaravelLike\Like::class,
-    
-    'user_model' => App\Models\User::class,
+
+    /*
+     * Model name for liker.
+     */
+    'user_model' => class_exists(\App\Models\User::class) ? \App\Models\User::class : null,
 ];
