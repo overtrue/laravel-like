@@ -13,9 +13,11 @@ jobs:
             - uses: actions/checkout@v2
             - name: Setup PHP environment
               uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 8.1
             - name: Install dependencies
               run: composer install
-            - name: PHPCSFixer check
+            - name: pint check
               run: composer check-style
     phpunit:
         strategy:
