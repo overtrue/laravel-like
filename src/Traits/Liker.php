@@ -74,9 +74,9 @@ trait Liker
     public function hasLiked(Model $object): bool
     {
         return ($this->relationLoaded('likes') ? $this->likes : $this->likes())
-                ->where('likeable_id', $object->getKey())
-                ->where('likeable_type', $object->getMorphClass())
-                ->count() > 0;
+            ->where('likeable_id', $object->getKey())
+            ->where('likeable_type', $object->getMorphClass())
+            ->count() > 0;
     }
 
     public function likes(): HasMany
