@@ -12,20 +12,10 @@
 composer require overtrue/laravel-like -vvv
 ```
 
-### Configuration
+### Configuration and Migrations
 
-This step is optional
-
-```php
-php artisan vendor:publish
-```
-
-### Migrations
-
-This step is also optional, if you want to custom likes table, you can publish the migration files:
-
-```php
-php artisan vendor:publish
+```shell
+php artisan vendor:publish --provider="Overtrue\LaravelLike\LikeServiceProvider"
 ```
 
 ## Usage
