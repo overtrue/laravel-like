@@ -101,6 +101,9 @@ foreach($likers as $user) {
 // all
 $user->likes()->count();
 
+// short version
+$user->totalLikes;
+
 // with type
 $user->likes()->withType(Post::class)->count();
 

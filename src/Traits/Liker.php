@@ -10,6 +10,7 @@ use Illuminate\Pagination\AbstractPaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Overtrue\LaravelLike\Like;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 trait Liker
 {
@@ -136,4 +137,12 @@ trait Liker
                 throw new \InvalidArgumentException('Invalid argument type.');
         }
     }
+    
+    protected function totalLikes(): Attribute
+    {
+        return Attribute::make(get: function ($value) {
+            return $this->likes()->count() ?? 0;
+        });
+    }
+    
 }

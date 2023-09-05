@@ -79,6 +79,7 @@ class FeatureTest extends TestCase
         $user->like($book2);
 
         $this->assertSame(4, $user->likes()->count());
+        $this->assertSame(4, $user->totalLikes);
         $this->assertSame(2, $user->likes()->withType(Book::class)->count());
     }
 
