@@ -2,6 +2,7 @@
 
 namespace Overtrue\LaravelLike\Traits;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 
 trait Likeable
@@ -31,5 +32,12 @@ trait Likeable
             config('like.user_foreign_key')
         )
             ->where('likeable_type', $this->getMorphClass());
+    }
+
+    protected function totalLikers(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->likers()->count() ?? 0;
+        });
     }
 }
