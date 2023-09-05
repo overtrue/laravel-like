@@ -8,8 +8,8 @@ use Overtrue\LaravelLike\Traits\Liker;
 
 class User extends Model
 {
-    use Liker;
     use Likeable;
+    use Liker;
 
     protected $fillable = ['name'];
 }
