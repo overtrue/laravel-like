@@ -80,6 +80,7 @@ class FeatureTest extends TestCase
 
         $this->assertSame(4, $user->likes()->count());
         $this->assertSame(2, $user->likes()->withType(Book::class)->count());
+        $this->assertSame(4, $user->totalLikes);
     }
 
     public function test_like_same_model()
@@ -106,6 +107,7 @@ class FeatureTest extends TestCase
         $user2->like($post);
 
         $this->assertCount(2, $post->likers);
+        $this->assertEquals(2, $post->totalLikers);
         $this->assertSame('overtrue', $post->likers[0]['name']);
         $this->assertSame('allen', $post->likers[1]['name']);
 

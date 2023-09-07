@@ -3,6 +3,7 @@
 namespace Overtrue\LaravelLike\Traits;
 
 use Illuminate\Contracts\Pagination\Paginator;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\AbstractCursorPaginator;
@@ -135,5 +136,12 @@ trait Liker
             default:
                 throw new \InvalidArgumentException('Invalid argument type.');
         }
+    }
+
+    protected function totalLikes(): Attribute
+    {
+        return Attribute::make(get: function ($value) {
+            return $this->likes()->count() ?? 0;
+        });
     }
 }

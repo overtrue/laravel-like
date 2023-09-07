@@ -101,11 +101,17 @@ foreach($likers as $user) {
 // all
 $user->likes()->count();
 
+// short way
+$user->totalLikes;
+
 // with type
 $user->likes()->withType(Post::class)->count();
 
 // likers count
 $post->likers()->count();
+
+// short way
+$post->totalLikers
 ```
 
 List with `*_count` attribute:
