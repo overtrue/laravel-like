@@ -100,7 +100,7 @@ trait Liker
         );
     }
 
-    public function attachLikeStatus(&$likeables, callable $resolver = null)
+    public function attachLikeStatus(&$likeables, ?callable $resolver = null)
     {
         $likes = $this->likes()->get()->keyBy(function ($item) {
             return \sprintf('%s:%s', $item->likeable_type, $item->likeable_id);
